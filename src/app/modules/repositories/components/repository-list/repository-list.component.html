@@ -4,22 +4,17 @@
       <i class="bi bi-folder2-open"></i>
       Repositorios
     </h1>
-    <span class="repo-list-page__count">{{ repositories.length }} repositorios</span>
   </div>
 
-  @if (isLoading) {
-    <div class="repo-list-page__loading">
-      <div class="spinner"></div>
-      <p>Cargando repositorios...</p>
-    </div>
-  } @else {
+  @if (repositories$ | async; as repositories) {
+    <p class="repo-list-page__count">{{ repositories.length }} repositorios</p>
     <div class="repo-grid">
       @for (repo of repositories; track repo.id) {
         <a class="repo-card" [routerLink]="['/repositories', repo.id]">
           <div class="repo-card__header">
             <i class="bi bi-folder2 repo-card__folder-icon"></i>
             <span class="repo-card__lang-badge">
-              <i class="bi {{ languageIcon(repo.language) }}"></i>
+              <i class="bi {{ getLanguageIcon(repo.language) }}"></i>
               {{ repo.language }}
             </span>
           </div>
@@ -34,6 +29,11 @@
           </div>
         </a>
       }
+    </div>
+  } @else {
+    <div class="repo-list-page__loading">
+      <div class="spinner"></div>
+      <p>Cargando repositorios...</p>
     </div>
   }
 </div>

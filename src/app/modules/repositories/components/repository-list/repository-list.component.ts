@@ -1,36 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Repositorio } from '../../models/repository.model';
 import { RepositoryService } from '../../services/repository.service';
 
 @Component({
   selector: 'app-repository-list',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, AsyncPipe, RouterLink],
   templateUrl: './repository-list.component.html',
   styleUrl: './repository-list.component.css'
 })
-export class RepositoryListComponent implements OnInit {
-  repositories: Repositorio[] = [];
-  isLoading = true;
+export class RepositoryListComponent {
+  private repositoryService = inject(RepositoryService);
 
-  constructor(private repositoryService: RepositoryService) {}
+  repositories$: Observable<Repositorio[]> = this.repositoryService.getRepositories();
 
-  ngOnInit(): void {
-    this.repositoryService.getRepositories().subscribe({
-      next: repos => {
-        this.repositories = repos;
-        this.isLoading = false;
-      },
-      error: err => {
-        console.error('Error cargando repositorios:', err);
-        this.isLoading = false;
-      }
-    });
-  }
-
-  get languageIcon(): (lang: string) => string {
+  getLanguageIcon(lang: string): string {
     const icons: Record<string, string> = {
       TypeScript: 'bi-filetype-tsx',
       JavaScript: 'bi-filetype-js',
@@ -41,6 +28,6 @@ export class RepositoryListComponent implements OnInit {
       CSS: 'bi-filetype-css',
       Kotlin: 'bi-phone-fill',
     };
-    return (lang: string) => icons[lang] ?? 'bi-code-slash';
+    return icons[lang] ?? 'bi-code-slash';
   }
 }

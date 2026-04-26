@@ -4,17 +4,12 @@
       <i class="bi bi-people-fill"></i>
       Usuarios de GitHub
     </h1>
-    <span class="user-list-page__count">{{ users.length }} usuarios</span>
   </div>
 
   <div class="user-list-page__layout">
     <div class="user-list-page__list">
-      @if (isLoading) {
-        <div class="user-list-page__loading">
-          <div class="spinner"></div>
-          <p>Cargando usuarios...</p>
-        </div>
-      } @else {
+      @if (users$ | async; as users) {
+        <p class="user-list-page__count">{{ users.length }} usuarios</p>
         @for (user of users; track user.id) {
           <div
             class="user-card"
@@ -36,6 +31,11 @@
             <i class="bi bi-chevron-right user-card__chevron"></i>
           </div>
         }
+      } @else {
+        <div class="user-list-page__loading">
+          <div class="spinner"></div>
+          <p>Cargando usuarios...</p>
+        </div>
       }
     </div>
 

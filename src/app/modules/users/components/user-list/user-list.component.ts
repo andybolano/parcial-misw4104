@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
+import { Observable } from 'rxjs';
 import { Usuario } from '../../models/user.model';
 import { UserService } from '../../services/user.service';
 import { UserDetailComponent } from '../user-detail/user-detail.component';
@@ -7,29 +8,15 @@ import { UserDetailComponent } from '../user-detail/user-detail.component';
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule, UserDetailComponent],
+  imports: [CommonModule, AsyncPipe, UserDetailComponent],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent implements OnInit {
-  users: Usuario[] = [];
+export class UserListComponent {
+  private userService = inject(UserService);
+
+  users$: Observable<Usuario[]> = this.userService.getUsers();
   selectedUser: Usuario | null = null;
-  isLoading = true;
-
-  constructor(private userService: UserService) {}
-
-  ngOnInit(): void {
-    this.userService.getUsers().subscribe({
-      next: users => {
-        this.users = users;
-        this.isLoading = false;
-      },
-      error: err => {
-        console.error('Error cargando usuarios:', err);
-        this.isLoading = false;
-      }
-    });
-  }
 
   selectUser(user: Usuario): void {
     this.selectedUser = this.selectedUser?.id === user.id ? null : user;
