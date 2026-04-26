@@ -1,0 +1,42 @@
+@if (!user) {
+  <div class="user-detail user-detail--empty">
+    <i class="bi bi-person-circle user-detail__placeholder-icon"></i>
+    <p class="user-detail__placeholder-text">Selecciona un usuario para ver su detalle</p>
+  </div>
+} @else {
+  <div class="user-detail">
+    <div class="user-detail__avatar-shell">
+      <img class="user-detail__avatar" [src]="user.avatarUrl" [alt]="user.name" />
+    </div>
+
+    <div class="user-detail__body">
+      <span class="user-detail__role-badge">{{ user.role }}</span>
+      <h2 class="user-detail__name">{{ user.name }}</h2>
+      <p class="user-detail__username">&#64;{{ user.username }}</p>
+
+      <div class="user-detail__meta">
+        <div class="user-detail__meta-item">
+          <i class="bi bi-envelope"></i>
+          <span>{{ user.email }}</span>
+        </div>
+        <div class="user-detail__meta-item">
+          <i class="bi bi-geo-alt"></i>
+          <span>{{ user.location }}</span>
+        </div>
+        <div class="user-detail__meta-item">
+          <i class="bi bi-folder2"></i>
+          <span>{{ user.repoIds.length }} repositorio{{ user.repoIds.length !== 1 ? 's' : '' }}</span>
+        </div>
+      </div>
+
+      <div class="user-detail__repo-ids">
+        <p class="user-detail__repo-label">IDs de repositorios</p>
+        <div class="user-detail__repo-chips">
+          @for (id of user.repoIds; track id) {
+            <span class="user-detail__chip">#{{ id }}</span>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}

@@ -1,0 +1,67 @@
+.app-shell {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #111118;
+}
+
+.app-shell__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 36px;
+  height: 60px;
+  background: #16161e;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.app-shell__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f4f4f4;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.app-shell__logo i {
+  font-size: 1.4rem;
+  color: #a5b4fc;
+}
+
+.app-shell__nav {
+  display: flex;
+  gap: 4px;
+}
+
+.app-shell__nav-link {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 16px;
+  border-radius: 10px;
+  color: #9ca3af;
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.18s, background 0.18s;
+}
+
+.app-shell__nav-link:hover {
+  color: #f4f4f4;
+  background: rgba(255,255,255,0.06);
+}
+
+.app-shell__nav-link--active {
+  color: #a5b4fc;
+  background: rgba(99, 102, 241, 0.12);
+}
+
+.app-shell__main {
+  flex: 1;
+  overflow-y: auto;
+}

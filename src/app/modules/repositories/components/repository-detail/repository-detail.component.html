@@ -1,0 +1,70 @@
+<div class="repo-detail-page">
+  <a class="repo-detail-page__back" routerLink="/repositories">
+    <i class="bi bi-arrow-left-short"></i>
+    Volver a repositorios
+  </a>
+
+  @if (isLoading) {
+    <div class="repo-detail__status">
+      <div class="spinner"></div>
+      <p>Cargando repositorio...</p>
+    </div>
+  } @else if (hasError || !repo) {
+    <div class="repo-detail__status repo-detail__status--error">
+      <i class="bi bi-exclamation-circle" style="font-size:2rem"></i>
+      <p>No se encontró el repositorio.</p>
+    </div>
+  } @else {
+    <div class="repo-detail">
+      <div class="repo-detail__header">
+        <div class="repo-detail__icon-wrap">
+          <i class="bi bi-folder2-open"></i>
+        </div>
+        <div>
+          <p class="repo-detail__eyebrow">Repositorio</p>
+          <h1 class="repo-detail__name">{{ repo.name }}</h1>
+        </div>
+      </div>
+
+      <p class="repo-detail__description">{{ repo.description }}</p>
+
+      <div class="repo-detail__stats">
+        <div class="repo-detail__stat">
+          <i class="bi bi-star-fill"></i>
+          <span>{{ repo.stars }} estrellas</span>
+        </div>
+        <div class="repo-detail__stat">
+          <i class="bi {{ languageIcon }}"></i>
+          <span>{{ repo.language }}</span>
+        </div>
+        <div class="repo-detail__stat">
+          <i class="bi bi-calendar3"></i>
+          <span>{{ formattedDate }}</span>
+        </div>
+        <div class="repo-detail__stat">
+          <i class="bi bi-person"></i>
+          <span>Owner ID: {{ repo.ownerId }}</span>
+        </div>
+      </div>
+
+      <div class="repo-detail__meta-grid">
+        <div class="repo-detail__meta-item">
+          <span class="repo-detail__meta-label">ID del repositorio</span>
+          <span class="repo-detail__meta-value">#{{ repo.id }}</span>
+        </div>
+        <div class="repo-detail__meta-item">
+          <span class="repo-detail__meta-label">Lenguaje principal</span>
+          <span class="repo-detail__meta-value">{{ repo.language }}</span>
+        </div>
+        <div class="repo-detail__meta-item">
+          <span class="repo-detail__meta-label">Estrellas</span>
+          <span class="repo-detail__meta-value">{{ repo.stars }}</span>
+        </div>
+        <div class="repo-detail__meta-item">
+          <span class="repo-detail__meta-label">Creado el</span>
+          <span class="repo-detail__meta-value">{{ formattedDate }}</span>
+        </div>
+      </div>
+    </div>
+  }
+</div>

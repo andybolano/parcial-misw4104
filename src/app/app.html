@@ -1,0 +1,22 @@
+<div class="app-shell">
+  <header class="app-shell__header">
+    <span class="app-shell__logo">
+      <i class="bi bi-github"></i>
+      GitHub Explorer
+    </span>
+    <nav class="app-shell__nav">
+      <a routerLink="/users" routerLinkActive="app-shell__nav-link--active" class="app-shell__nav-link">
+        <i class="bi bi-people"></i>
+        Usuarios
+      </a>
+      <a routerLink="/repositories" routerLinkActive="app-shell__nav-link--active" class="app-shell__nav-link">
+        <i class="bi bi-folder2"></i>
+        Repositorios
+      </a>
+    </nav>
+  </header>
+
+  <main class="app-shell__main">
+    <router-outlet />
+  </main>
+</div>

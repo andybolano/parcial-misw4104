@@ -1,0 +1,46 @@
+<div class="user-list-page">
+  <div class="user-list-page__header">
+    <h1 class="user-list-page__title">
+      <i class="bi bi-people-fill"></i>
+      Usuarios de GitHub
+    </h1>
+    <span class="user-list-page__count">{{ users.length }} usuarios</span>
+  </div>
+
+  <div class="user-list-page__layout">
+    <div class="user-list-page__list">
+      @if (isLoading) {
+        <div class="user-list-page__loading">
+          <div class="spinner"></div>
+          <p>Cargando usuarios...</p>
+        </div>
+      } @else {
+        @for (user of users; track user.id) {
+          <div
+            class="user-card"
+            [class.user-card--active]="isSelected(user)"
+            (click)="selectUser(user)"
+          >
+            <img class="user-card__avatar" [src]="user.avatarUrl" [alt]="user.name" />
+            <div class="user-card__body">
+              <p class="user-card__name">{{ user.name }}</p>
+              <p class="user-card__username">&#64;{{ user.username }}</p>
+              <div class="user-card__footer">
+                <span class="user-card__role">{{ user.role }}</span>
+                <span class="user-card__location">
+                  <i class="bi bi-geo-alt-fill"></i>
+                  {{ user.location }}
+                </span>
+              </div>
+            </div>
+            <i class="bi bi-chevron-right user-card__chevron"></i>
+          </div>
+        }
+      }
+    </div>
+
+    <div class="user-list-page__detail">
+      <app-user-detail [user]="selectedUser" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div class="repo-list-page">
+  <div class="repo-list-page__header">
+    <h1 class="repo-list-page__title">
+      <i class="bi bi-folder2-open"></i>
+      Repositorios
+    </h1>
+    <span class="repo-list-page__count">{{ repositories.length }} repositorios</span>
+  </div>
+
+  @if (isLoading) {
+    <div class="repo-list-page__loading">
+      <div class="spinner"></div>
+      <p>Cargando repositorios...</p>
+    </div>
+  } @else {
+    <div class="repo-grid">
+      @for (repo of repositories; track repo.id) {
+        <a class="repo-card" [routerLink]="['/repositories', repo.id]">
+          <div class="repo-card__header">
+            <i class="bi bi-folder2 repo-card__folder-icon"></i>
+            <span class="repo-card__lang-badge">
+              <i class="bi {{ languageIcon(repo.language) }}"></i>
+              {{ repo.language }}
+            </span>
+          </div>
+          <h3 class="repo-card__name">{{ repo.name }}</h3>
+          <p class="repo-card__description">{{ repo.description }}</p>
+          <div class="repo-card__footer">
+            <span class="repo-card__stars">
+              <i class="bi bi-star-fill"></i>
+              {{ repo.stars }}
+            </span>
+            <span class="repo-card__date">{{ repo.createdAt }}</span>
+          </div>
+        </a>
+      }
+    </div>
+  }
+</div>
