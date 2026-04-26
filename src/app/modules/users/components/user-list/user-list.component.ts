@@ -19,9 +19,15 @@ export class UserListComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(users => {
-      this.users = users;
-      this.isLoading = false;
+    this.userService.getUsers().subscribe({
+      next: users => {
+        this.users = users;
+        this.isLoading = false;
+      },
+      error: err => {
+        console.error('Error cargando usuarios:', err);
+        this.isLoading = false;
+      }
     });
   }
 

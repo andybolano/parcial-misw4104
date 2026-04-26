@@ -18,9 +18,15 @@ export class RepositoryListComponent implements OnInit {
   constructor(private repositoryService: RepositoryService) {}
 
   ngOnInit(): void {
-    this.repositoryService.getRepositories().subscribe(repos => {
-      this.repositories = repos;
-      this.isLoading = false;
+    this.repositoryService.getRepositories().subscribe({
+      next: repos => {
+        this.repositories = repos;
+        this.isLoading = false;
+      },
+      error: err => {
+        console.error('Error cargando repositorios:', err);
+        this.isLoading = false;
+      }
     });
   }
 
