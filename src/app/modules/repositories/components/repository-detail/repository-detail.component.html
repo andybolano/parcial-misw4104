@@ -4,17 +4,7 @@
     Volver a repositorios
   </a>
 
-  @if (isLoading) {
-    <div class="repo-detail__status">
-      <div class="spinner"></div>
-      <p>Cargando repositorio...</p>
-    </div>
-  } @else if (hasError || !repo) {
-    <div class="repo-detail__status repo-detail__status--error">
-      <i class="bi bi-exclamation-circle" style="font-size:2rem"></i>
-      <p>No se encontró el repositorio.</p>
-    </div>
-  } @else {
+  @if (repo$ | async; as repo) {
     <div class="repo-detail">
       <div class="repo-detail__header">
         <div class="repo-detail__icon-wrap">
@@ -34,12 +24,12 @@
           <span>{{ repo.stars }} estrellas</span>
         </div>
         <div class="repo-detail__stat">
-          <i class="bi {{ languageIcon }}"></i>
+          <i class="bi {{ getLanguageIcon(repo.language) }}"></i>
           <span>{{ repo.language }}</span>
         </div>
         <div class="repo-detail__stat">
           <i class="bi bi-calendar3"></i>
-          <span>{{ formattedDate }}</span>
+          <span>{{ formatDate(repo.createdAt) }}</span>
         </div>
         <div class="repo-detail__stat">
           <i class="bi bi-person"></i>
@@ -62,9 +52,14 @@
         </div>
         <div class="repo-detail__meta-item">
           <span class="repo-detail__meta-label">Creado el</span>
-          <span class="repo-detail__meta-value">{{ formattedDate }}</span>
+          <span class="repo-detail__meta-value">{{ formatDate(repo.createdAt) }}</span>
         </div>
       </div>
+    </div>
+  } @else {
+    <div class="repo-detail__status">
+      <div class="spinner"></div>
+      <p>Cargando repositorio...</p>
     </div>
   }
 </div>

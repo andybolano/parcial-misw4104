@@ -1,49 +1,25 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { CommonModule, AsyncPipe } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { Observable } from 'rxjs';
 import { Repositorio } from '../../models/repository.model';
 import { RepositoryService } from '../../services/repository.service';
 
 @Component({
   selector: 'app-repository-detail',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule, AsyncPipe, RouterLink],
   templateUrl: './repository-detail.component.html',
   styleUrl: './repository-detail.component.css'
 })
-export class RepositoryDetailComponent implements OnInit {
-  repo: Repositorio | null = null;
-  isLoading = true;
-  hasError = false;
+export class RepositoryDetailComponent {
+  private route = inject(ActivatedRoute);
+  private repositoryService = inject(RepositoryService);
 
-  constructor(
-    private route: ActivatedRoute,
-    private repositoryService: RepositoryService
-  ) {}
+  private id = Number(this.route.snapshot.paramMap.get('id'));
+  repo$: Observable<Repositorio | undefined> = this.repositoryService.getRepositoryById(this.id);
 
-  ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-
-    if (!id) {
-      this.hasError = true;
-      this.isLoading = false;
-      return;
-    }
-
-    this.repositoryService.getRepositoryById(id).subscribe({
-      next: repo => {
-        this.repo = repo ?? null;
-        this.hasError = !repo;
-        this.isLoading = false;
-      },
-      error: () => {
-        this.hasError = true;
-        this.isLoading = false;
-      }
-    });
-  }
-
-  get languageIcon(): string {
+  getLanguageIcon(lang: string): string {
     const icons: Record<string, string> = {
       TypeScript: 'bi-filetype-tsx',
       JavaScript: 'bi-filetype-js',
@@ -53,14 +29,13 @@ export class RepositoryDetailComponent implements OnInit {
       HTML: 'bi-filetype-html',
       CSS: 'bi-filetype-css',
       Kotlin: 'bi-phone-fill',
-      Swift: 'bi-apple',
     };
-    return icons[this.repo?.language ?? ''] ?? 'bi-code-slash';
+    return icons[lang] ?? 'bi-code-slash';
   }
 
-  get formattedDate(): string {
-    if (!this.repo?.createdAt) return 'Sin fecha';
+  formatDate(dateStr: string): string {
+    if (!dateStr) return 'Sin fecha';
     return new Intl.DateTimeFormat('es-CO', { day: 'numeric', month: 'long', year: 'numeric' })
-      .format(new Date(this.repo.createdAt));
+      .format(new Date(dateStr));
   }
 }
